@@ -16,6 +16,30 @@ if (isset($_SESSION['FLASH']))
   unset($_SESSION['FLASH']);
 }
 
+if (isset($_POST["upload"])) {
+    
+    $fileName = $_FILES["brandfile"]["tmp_name"];
+    
+    if ($_FILES["brandfile"]["size"] > 0) {
+        
+        $brandfile = fopen($fileName, "r");
+        
+        while (($column = fgetcsv($brandfile, 10000, ",")) !== FALSE) {
+            $sqlInsert = "INSERT into brand (brand)
+                   values ('" . $column[0] . "')";
+            $result = mysqli_query($con, $sqlInsert);
+            
+            if (! empty($result)) {
+                $type = "success";
+                $message = "CSV Data Imported into the Database";
+            } else {
+                $type = "error";
+                $message = "Problem in Importing CSV Data";
+            }
+        }
+    }
+}
+
 if(isset($_POST['submit']))
   {
     $brand=$_POST['brand'];
@@ -91,6 +115,28 @@ else
             </div>
           </div>
           </form>
+
+          <form action="" method="post" enctype="multipart/form-data">
+           <div class="form-group row">
+            <label for="input-21" class="col-sm-2 col-form-label">Import</label>
+            <div class="col-sm-10">
+            <input type="file" class="form-control" id="site" name="brandfile" placeholder="Enter Name" required>
+            </div>
+          
+    
+          </div>
+
+        
+
+           <div class="form-group row">
+            <label class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+            <button type="submit" name="upload" class="btn btn-primary px-5"><i class="icon-lock"></i> UPLOAD</button>
+            </div>
+          </div>
+          </form>
+           <div id="labelError"></div>
+<a href="assets/inputCSV.csv" class="btn btn-info px-5">Download sample template </a>
          </div>
        </div>
 

@@ -17,6 +17,31 @@ if (isset($_SESSION['FLASH']))
   unset($_SESSION['FLASH']);
 }
 
+if (isset($_POST["upload"])) {
+    
+    $fileName = $_FILES["assetfile"]["tmp_name"];
+    
+    if ($_FILES["assetfile"]["size"] > 0) {
+        
+        $assetfile = fopen($fileName, "r");
+        
+        while (($column = fgetcsv($assetfile, 10000, ",")) !== FALSE) {
+            $sqlInsert = "INSERT into asset (asid, cost, description, pno, pdate, model, status, sno, site, category, location, department, employee, brand, uid, cond)
+                   values ('" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "','" . $column[7] . "','" . $column[8] . "','" . $column[9] . "','" . $column[10] . "','" . $column[11] . "','" . $column[12] . "','" . $column[13] . "','" . $column[14] . "','" . $column[15] . "')";
+            $result = mysqli_query($con, $sqlInsert);
+            
+            if (! empty($result)) {
+                $type = "success";
+                $message = "CSV Data Imported into the Database";
+            } else {
+                $type = "error";
+                $message = "Problem in Importing CSV Data";
+            }
+        }
+    }
+}
+
+
 if(isset($_POST['submit']))
   {
     $asid=$_POST['asid'];
@@ -100,14 +125,29 @@ else
 <div class="clearfix"></div>
   
   <div class="content-wrapper">
-
+     <div class="container-fluid">
+  <div class="row pt-2 pb-2">
+        <div class="col-sm-9">
+        <h4 class="page-title">Add New Asset</h4>
+       
+     </div>
+     <div class="col-sm-3">
+       <div class="btn-group float-sm-right">
+         <button class="btn btn-primary btn-block m-1" data-toggle="modal" data-target="#formemodal">Import</button>
+       
+       
+        </button>
+       
+      </div>
+     </div>
+     </div>
+   </div>
       <div class="row">
       <div class="col-lg-12">
          
          <div class="card">
            <div class="card-body">
-           <div class="card-title">Add New Asset</div>
-           <hr>
+       
             <form method="POST" action="" enctype="multipart/form-data">
                <?php if ( $message != '' ) { ?>
     <p class="message"><?php echo $message; ?></p>
@@ -336,7 +376,43 @@ echo "<option value=".$row['brand'].">" . $row['brand'] . "</option>";
   
    
   </div><!--End wrapper-->
-  
+   <div class="modal fade" id="formemodal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Import</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="" method="post" enctype="multipart/form-data">
+           <div class="form-group row">
+            <label for="input-21" class="col-sm-2 col-form-label">Import</label>
+            <div class="col-sm-10">
+            <input type="file" class="form-control" id="site" name="assetfile" placeholder="Enter Name" required>
+            </div>
+          
+    
+          </div>
+
+        
+
+           <div class="form-group row">
+            <label class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+            <button type="submit" name="upload" class="btn btn-primary px-5"><i class="icon-lock"></i> UPLOAD</button>
+            </div>
+          </div>
+          </form>
+           <div id="labelError"></div>
+<a href="assets/assetsample.csv" class="btn btn-info px-5">Download sample template </a>
+         </div>
+       </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
 
 <!-- Bootstrap core JavaScript-->
