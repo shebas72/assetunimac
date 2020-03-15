@@ -44,13 +44,18 @@ if (isset($_POST["upload"])) {
 if(isset($_POST['submit']))
   {
     $site=$_POST['site'];
+    $description=$_POST['description'];
+    $address=$_POST['address'];
+    $city=$_POST['city'];
+    $state=$_POST['state'];
+    $country=$_POST['country'];
    
     $test = mysqli_query($con,"SELECT * FROM site WHERE site='$site'");
      $testresult = mysqli_num_rows($test);
      if($testresult ===0){
  
 
-     $query=mysqli_query($con, "insert into site (site) value ('$site')");
+     $query=mysqli_query($con, "INSERT INTO site (site, description, address, city, state, country) VALUES ('$site','$description','$address','$city','$state','$country')");
 }
 else
 {
@@ -92,18 +97,54 @@ else
            <div class="card-body">
            <div class="card-title">Add New Site</div>
            <hr>
+             <?php if ( $message != '' ) { ?>
+    <p class="message"><?php echo $message; ?></p>
+    <p class="message"><?php echo $existmessage; ?></p>
+    <?php } ?>
             <form action="" method="post">
            <div class="form-group row">
             <label for="input-21" class="col-sm-2 col-form-label">Site Name</label>
             <div class="col-sm-10">
             <input type="text" class="form-control" id="site" name="site" placeholder="Enter Name" required>
             </div>
-             <?php if ( $message != '' ) { ?>
-    <p class="message"><?php echo $message; ?></p>
-    <p class="message"><?php echo $existmessage; ?></p>
-    <?php } ?>
+           
           </div>
 
+           <div class="form-group row">
+            <label for="input-21" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="site" name="description" placeholder="Enter Description" >
+            </div>
+           
+          </div>
+          <div class="form-group row">
+            <label for="input-21" class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="site" name="address" placeholder="Enter Address" >
+            </div>
+           
+          </div>
+<div class="form-group row">
+            <label for="input-21" class="col-sm-2 col-form-label">City</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="site" name="city" placeholder="Enter City" >
+            </div>
+           
+          </div>
+          <div class="form-group row">
+            <label for="input-21" class="col-sm-2 col-form-label">State</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="site" name="state" placeholder="Enter State" >
+            </div>
+           
+          </div>
+          <div class="form-group row">
+            <label for="input-21" class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="site" name="country" placeholder="Enter Country" >
+            </div>
+           
+          </div>
         
 
            <div class="form-group row">
@@ -156,6 +197,11 @@ else
                 <thead>
                     <tr>
                         <th>Site Name</th>
+                        <th>Decription</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Country</th>
                         <th>Action</th>
                 
                       
@@ -173,14 +219,21 @@ else
   //header('location: index.php');
 }
 
-                  $show = "SELECT site FROM site";
+                  $show = "SELECT * FROM site";
                   $final = $con->query($show);
 if ($final->num_rows > 0) {
 while($row = $final->fetch_assoc()) {
   echo "<tr><td>" . $row["site"] . "</td>
+  <td>" . $row["description"] . "</td>
+  <td>" . $row["address"] . "</td>
+  <td>" . $row["city"] . "</td>
+  <td>" . $row["state"] . "</td>
+  <td>" . $row["country"] . "</td>
   <td>
 
  <a href=\"site.php?del=" . $row["site"] . "\"><i class=\"btn btn-danger waves-effect waves-light m-1 fa fa-trash-o\"></i></a>
+ <a href=\"site-edit.php?edit=" . $row["id"] . "\"><i class=\"btn btn-info waves-effect waves-light m-1 fa fa-pencil\"></i></a>
+
 
 </td>
 
@@ -249,6 +302,7 @@ while($row = $final->fetch_assoc()) {
   <script src="assets/plugins/bootstrap-datatable/js/buttons.print.min.js"></script>
   <script src="assets/plugins/bootstrap-datatable/js/buttons.colVis.min.js"></script>
 
+  
     <script>
      $(document).ready(function() {
       //Default data table

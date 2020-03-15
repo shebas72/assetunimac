@@ -154,8 +154,8 @@ while($row55 = $final55->fetch_assoc()) {
      </a>
     </li>
     <li class="nav-item">
-      <form class="search-bar">
-        <input type="text" class="form-control" placeholder="Enter keywords">
+     <form class="search-bar" method="get" action="search.php"  id="searchform"> 
+        <input type="text" name="query" class="form-control" placeholder="Enter keywords">
          <a href="javascript:void();"><i class="icon-magnifier"></i></a>
       </form>
     </li>
