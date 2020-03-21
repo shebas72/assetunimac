@@ -163,6 +163,9 @@ while($row = $final->fetch_assoc()) {
                   <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#tabe-1"> <span class="hidden-xs">Photos</span></a>
                   </li>
+                    <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tabe-4"> <span class="hidden-xs">Additional Information</span></a>
+                  </li>
                 
                    <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#tabe-2"> <span class="hidden-xs">History</span></a>
@@ -187,11 +190,30 @@ while($row = $final->fetch_assoc()) {
   
         </div>
       </div>
-      <?php
+     
+                  </div>
+
+<div id="tabe-4" class="container tab-pane fade">
+ <table id="example" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Additional Information</th>
+                      </tr>
+                      <tbody>
+                      <td>
+                        <?php echo $row['customname']; ?>
+                      </td>
+                    </tbody>
+</thead>
+</table>
+
+
+ </div>
+  <?php
 }
 }
 ?>
-                  </div>
+
                   <div id="tabe-2" class="container tab-pane fade">
                  
 

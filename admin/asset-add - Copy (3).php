@@ -59,7 +59,6 @@ if(isset($_POST['submit']))
     $employee=$_POST['employee'];
     $brand=$_POST['brand'];
     $uid=$_POST['uid'];
-     $customname=$_POST['customname'];
     $cond=$_POST['cond'];
     $propic=rand(1000,100000)."-".$_FILES['propic']['name']; 
     $propic1=rand(1000,100000)."-".$_FILES['propic1']['name']; 
@@ -77,13 +76,26 @@ if(isset($_POST['submit']))
  $new_name1 = $target.time()."-".rand(1000, 9999)."-".$propic1;
  $new_name2 = $target.time()."-".rand(1000, 9999)."-".$propic2;
 
+$customname = $_POST["customname"]; 
+
+
 
     $test = mysqli_query($con,"SELECT * FROM asset WHERE asid='$asid'");
      $testresult = mysqli_num_rows($test);
      if($testresult ===0){
- 
+ // if($customname > 0)  {
+ if(!empty($_POST["customname"]))  {
+foreach ($_POST["customname"] as $key => $value)  {
+// if(trim($_POST["customname"][$i] != ''))  
+// {
+$query=mysqli_query($con, "insert into asset (asid, cost, description, pno, pdate, model, status, sno, site, category, location, department, employee, brand, uid, cond, propic, propic1, propic2, customname) value ('$asid', '$cost', '$description', '$pno', '$pdate', '$model', '$status', '$sno', '$site', '$category', '$location',  '$department', '$employee', '$brand', '$uid', '$cond', '$propic', '$propic1', '$propic2', '$value' )");
+// }
+}
+}
+  
 
-     $query=mysqli_query($con, "insert into asset (asid, cost, description, pno, pdate, model, status, sno, site, category, location, department, employee, brand, uid, cond, propic, propic1, propic2, customname) value ('$asid', '$cost', '$description', '$pno', '$pdate', '$model', '$status', '$sno', '$site', '$category', '$location',  '$department', '$employee', '$brand', '$uid', '$cond', '$propic', '$propic1', '$propic2', '$customname' )");
+
+     
 
 move_uploaded_file($file_loc,$target.$propic);
 move_uploaded_file($file_loc1,$target.$propic1);
@@ -122,7 +134,9 @@ else
 
 ?>
 <?php include('inc/header.php');?>
-   
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+ 
 <div class="clearfix"></div>
   
   <div class="content-wrapper">
@@ -149,65 +163,65 @@ else
          <div class="card">
            <div class="card-body">
        
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="" name="add_name" id="add_name" enctype="multipart/form-data">
                <?php if ( $message != '' ) { ?>
     <p class="message"><?php echo $message; ?></p>
     <p class="message"><?php echo $existmessage; ?></p>
     <?php } ?>
            <div class="form-group row">
-            <label for="input-21" class="col-sm-2 col-form-label">Asset ID</label>
+           
             <div class="col-sm-4">
-            <input type="text" class="form-control" id="asid" name="asid" placeholder="Enter ID" required>
+            <input type="text" class="form-control" id="asid" name="asid" placeholder="Enter Asset ID" required>
             </div>
-              <label for="input-22" class="col-sm-2 col-form-label">Cost</label>
+            
             <div class="col-sm-4">
             <input type="text" class="form-control" id="cost" name="cost" placeholder="Enter Cost">
             </div>
           </div>
           <div class="form-group row">
-            <label for="input-22" class="col-sm-2 col-form-label">Description</label>
+          
             <div class="col-sm-4">
             <input type="text" class="form-control" id="description" name="description" placeholder="Enter Description">
               </div>
-              <label for="input-22" class="col-sm-2 col-form-label">Plate number</label>
+           
             <div class="col-sm-4">
             <input type="text" class="form-control" id="pno" name="pno" placeholder="Enter Plate">
           
             </div>
           </div>
             <div class="form-group row">
-            <label for="input-23" class="col-sm-2 col-form-label">Purchase date</label>
+           
             <div class="col-sm-4">
-            <input type="date" class="form-control" id="pdate" name="pdate" placeholder="Enter Purchase date">
+            <input type="text" class="form-control"  onfocus="(this.type='date')" onblur="(this.type='text')" id="pdate" name="pdate" placeholder="Enter Purchase date">
             </div>
-            <label for="input-22" class="col-sm-2 col-form-label">Model</label>
+          
             <div class="col-sm-4">
             <input type="text" class="form-control" id="model" name="model" placeholder="Enter Model">
             </div>
             </div>
              
           <div class="form-group row">
-            <label for="input-22" class="col-sm-2 col-form-label">Status</label>
+            
             <div class="col-sm-4"> 
              <select class="custom-select" name="status" id="inputGroupSelect01 status">
-                    <option selected>Choose...</option>
+                    <option selected>Status...</option>
                     <option value="Available">Available</option>
                     <option value="Disposed">Disposed</option>
                     <option value="Checked Out">Checked Out </option>
                    
                   </select>
             </div>
-             <label for="input-22" class="col-sm-2 col-form-label">Serial no.</label>
+           
             <div class="col-sm-4">
             <input type="text" class="form-control" id="input-22" name="sno" placeholder="Enter Serial no.">
             </div>
           </div>
 
              <div class="form-group row">
-            <label for="input-22" class="col-sm-2 col-form-label">Site</label>
+           
             <div class="col-sm-4">
           <select name="site" class="custom-select" id="inputGroupSelect01">
-  <option selected>Choose...</option>
+  <option selected>Site...</option>
 <?php 
 $sql = mysqli_query($con, "SELECT site FROM site");
 while ($row = $sql->fetch_assoc()){
@@ -216,10 +230,10 @@ echo "<option value=".$row['site'].">" . $row['site'] . "</option>";
 ?>
 </select>
             </div>
-               <label for="input-22" class="col-sm-2 col-form-label">Location</label>
+           
             <div class="col-sm-4">
            <select name="location" class="custom-select" id="inputGroupSelect01">
-  <option selected>Choose...</option>
+  <option selected>Location...</option>
 <?php 
 $sql = mysqli_query($con, "SELECT location FROM location");
 while ($row = $sql->fetch_assoc()){
@@ -231,10 +245,10 @@ echo "<option value=".$row['location'].">" . $row['location'] . "</option>";
           </div>
 
            <div class="form-group row">
-            <label for="input-22" class="col-sm-2 col-form-label">Category</label>
+           
             <div class="col-sm-4">
       <select name="category" class="custom-select" id="inputGroupSelect01">
-  <option selected>Choose...</option>
+  <option selected>Category...</option>
 <?php 
 $sql = mysqli_query($con, "SELECT category FROM category");
 while ($row = $sql->fetch_assoc()){
@@ -243,10 +257,10 @@ echo "<option value=".$row['category'].">" . $row['category'] . "</option>";
 ?>
 </select>
             </div>
-               <label for="input-22" class="col-sm-2 col-form-label">Department</label>
+         
             <div class="col-sm-4">
               <select name="department" class="custom-select" id="inputGroupSelect01">
-  <option selected>Choose...</option>
+  <option selected>Department...</option>
 <?php 
 $sql = mysqli_query($con, "SELECT department FROM department");
 while ($row = $sql->fetch_assoc()){
@@ -258,11 +272,11 @@ echo "<option value=".$row['department'].">" . $row['department'] . "</option>";
           </div>
 
             <div class="form-group row">
-            <label for="input-22" class="col-sm-2 col-form-label">Assigned to</label>
+          
             <div class="col-sm-4">
            
   <select name="employee" class="custom-select" id="inputGroupSelect01">
-  <option selected>Choose...</option>
+  <option selected>Assigned to...</option>
 <?php 
 $sql = mysqli_query($con, "SELECT * FROM employees");
 while ($row = $sql->fetch_assoc()){
@@ -273,10 +287,10 @@ echo "<option value=".$row['name'].">" . $row['name'] . "</option>";
 
 
             </div>
-               <label for="input-22" class="col-sm-2 col-form-label">Brand</label>
+        
             <div class="col-sm-4">
              <select name="brand" class="custom-select" id="inputGroupSelect01">
-  <option selected>Choose...</option>
+  <option selected>Brand...</option>
 <?php 
 $sql = mysqli_query($con, "SELECT brand FROM brand");
 while ($row = $sql->fetch_assoc()){
@@ -287,15 +301,15 @@ echo "<option value=".$row['brand'].">" . $row['brand'] . "</option>";
             </div>
           </div>
             <div class="form-group row">
-            <label for="input-22" class="col-sm-2 col-form-label">Unimac ID</label>
+          
             <div class="col-sm-4">
             <input type="text" class="form-control" name="uid" id="input-22" placeholder="Enter Unimac ID">
             </div>
-               <label for="input-22" class="col-sm-2 col-form-label">Condition</label>
+          
             <div class="col-sm-4">
        
                   <select class="custom-select" name="cond" id="inputGroupSelect01">
-                    <option selected>Choose...</option>
+                    <option selected>Condition...</option>
                     <option value="Major Repair">Major Repair</option>
                     <option value="Minor Repair">Minor Repair</option>
                     <option value="Operational">Operational </option>
@@ -303,22 +317,27 @@ echo "<option value=".$row['brand'].">" . $row['brand'] . "</option>";
                   </select>
             </div>
           </div>
-
-               <div class="form-group row">
-          <label for="basic-textarea" class="col-sm-2 col-form-label">Additional Information</label>
-          <div class="col-sm-10">
-          <textarea rows="4" class="form-control" name="customname" id="basic-textarea"></textarea>
+           <div class="form-group row">
+           
+            <div class="col-sm-4">
+               <div id="dynamic_field">
+            <input type="text" class="form-control" name="customname[]" id="input-22" placeholder="Enter Field Name">
           </div>
-        </div>
-        
+</div>
+ <div class="col-sm-4">
+            <button type="button" name="add" id="add" class="btn btn-success">Add More</button>
+            </div>
+               
+          </div>
             
  <div class="form-group row">
         <div class="input-group mb-3">
-                <label for="input-22" class="col-sm-2 col-form-label">Image 1</label>
+              
                   <div class="custom-file col-sm-4">
-                   <input type="file" name="propic" class="custom-file-input" id="inputGroupFile01 upname2">
-                    <label class="custom-file-label" for="inputGroupFile01"> <div id="file-upload-filename"></div></label>
-  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                   <input title="
+                   test" type="file" name="propic" class="custom-file-input" id="inputGroupFile01 upname2">
+                 
+  <label class="custom-file-label" for="inputGroupFile01">Upload Image 1</label>
                   </div>
                 </div>
               </div>
@@ -328,11 +347,11 @@ echo "<option value=".$row['brand'].">" . $row['brand'] . "</option>";
       
  <div class="form-group row">
         <div class="input-group mb-3">
-                <label for="input-22" class="col-sm-2 col-form-label">Image 2</label>
+             
                   <div class="custom-file col-sm-4">
                    <input type="file" name="propic1" class="custom-file-input" id="inputGroupFile01 upname2">
                     <label class="custom-file-label" for="inputGroupFile01"> <div id="file-upload-filename"></div></label>
-  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+  <label class="custom-file-label" for="inputGroupFile01">Upload Image 2</label>
                   </div>
                 </div>
               </div>
@@ -341,10 +360,10 @@ echo "<option value=".$row['brand'].">" . $row['brand'] . "</option>";
          
  <div class="form-group row">
         <div class="input-group mb-3">
-                <label for="input-22" class="col-sm-2 col-form-label">Image 3</label>
+               
                   <div class="custom-file col-sm-4">
                    <input type="file" name="propic2" class="custom-file-input" id="inputGroupFile01 upname3">
-                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    <label class="custom-file-label" for="inputGroupFile01">Upload image 3</label>
                   </div>
                 </div>
               </div> 
@@ -359,7 +378,31 @@ echo "<option value=".$row['brand'].">" . $row['brand'] . "</option>";
          </div>
        </div>
 
-    
+    <script>  
+ $(document).ready(function(){  
+      var i=1;  
+      $('#add').click(function(){  
+           i++;  
+           $('#dynamic_field').append('<div id="row'+i+'"><br><input type="text" name="customname[]" placeholder="Enter field name" class="form-control" /><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></div>');  
+      });  
+      $(document).on('click', '.btn_remove', function(){  
+           var button_id = $(this).attr("id");   
+           $('#row'+button_id+'').remove();  
+      });  
+      $('#submit').click(function(){            
+           $.ajax({  
+                url:"asset-add.php",  
+                method:"POST",  
+                data:$('#add_name').serialize(),  
+                success:function(data)  
+                {  
+                     alert(data);  
+                     $('#add_name')[0].reset();  
+                }  
+           });  
+      });  
+ });  
+ </script>
 
  <!--start overlay-->
     <div class="overlay toggle-menu"></div>

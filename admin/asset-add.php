@@ -60,6 +60,7 @@ if(isset($_POST['submit']))
     $brand=$_POST['brand'];
     $uid=$_POST['uid'];
     $cond=$_POST['cond'];
+    $customname=$_POST['customname'];
     $propic=rand(1000,100000)."-".$_FILES['propic']['name']; 
     $propic1=rand(1000,100000)."-".$_FILES['propic1']['name']; 
     $propic2=rand(1000,100000)."-".$_FILES['propic2']['name']; 
@@ -82,7 +83,7 @@ if(isset($_POST['submit']))
      if($testresult ===0){
  
 
-     $query=mysqli_query($con, "insert into asset (asid, cost, description, pno, pdate, model, status, sno, site, category, location, department, employee, brand, uid, cond, propic, propic1, propic2) value ('$asid', '$cost', '$description', '$pno', '$pdate', '$model', '$status', '$sno', '$site', '$category', '$location',  '$department', '$employee', '$brand', '$uid', '$cond', '$propic', '$propic1', '$propic2' )");
+     $query=mysqli_query($con, "insert into asset (asid, cost, description, pno, pdate, model, status, sno, site, category, location, department, employee, brand, uid, cond, propic, propic1, propic2, customname) value ('$asid', '$cost', '$description', '$pno', '$pdate', '$model', '$status', '$sno', '$site', '$category', '$location',  '$department', '$employee', '$brand', '$uid', '$cond', '$propic', '$propic1', '$propic2', '$customname' )");
 
 move_uploaded_file($file_loc,$target.$propic);
 move_uploaded_file($file_loc1,$target.$propic1);
@@ -302,6 +303,15 @@ echo "<option value=".$row['brand'].">" . $row['brand'] . "</option>";
                   </select>
             </div>
           </div>
+
+
+            <div class="form-group row">
+          <label for="basic-textarea" class="col-sm-2 col-form-label">Additional Information</label>
+          <div class="col-sm-10">
+          <textarea rows="4" class="form-control" name="customname" id="basic-textarea"></textarea>
+          </div>
+        </div>
+        
             
  <div class="form-group row">
         <div class="input-group mb-3">
